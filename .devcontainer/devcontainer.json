@@ -12,7 +12,10 @@
 			"extensions": [
 				"GitHub.copilot",
 				"GitHub.copilot-chat",
-				"piotrpalarz.vscode-gitignore-generator"
+				"piotrpalarz.vscode-gitignore-generator",
+				"eamodio.gitlens",
+				"ms-dotnettools.vscodeintellicode-csharp",
+				"ms-dotnettools.csdevkit"
 			]
 		}
 	}

@@ -1,7 +1,100 @@
 ﻿@page "/"
 
+@using Azure;
+@using Azure.AI.Vision.Common;
+@using Azure.AI.Vision.ImageAnalysis;
+@rendermode InteractiveServer
+
 <PageTitle>Home</PageTitle>
 
-<h1>Hello, world!</h1>
+<h1>Computer Vision</h1>
 
-Welcome to your new app.
+<p>Insert URL or type prompt:</p>
+<textarea @bind="urlOrPrompt" rows="1" cols="50"
+    placeholder="Enter Url to analyze or prompt text to generate image"></textarea>
+
+<p>
+    <button @onclick="AnalyzeImage" disabled="@string.IsNullOrEmpty(urlOrPrompt)">Analyze Image</button>
+    <button @onclick="GenerateImage" disabled="@string.IsNullOrEmpty(urlOrPrompt)">Generate Image</button>
+</p>
+
+<p><strong>@prompt</strong></p>
+@code {
+    private string urlOrPrompt = "";
+    private string prompt = "";
+    private void OnurlOrPrompt(ChangeEventArgs e)
+    {
+        urlOrPrompt = e.Value.ToString();
+    }
+
+    void AnalyzeImage()
+    {
+        var serviceOptions = new VisionServiceOptions(
+        Environment.GetEnvironmentVariable("VISION_ENDPOINT"),
+        new AzureKeyCredential(Environment.GetEnvironmentVariable("VISION_KEY")));
+
+        using var imageSource = VisionSource.FromUrl(
+        new Uri(urlOrPrompt));
+
+        var analysisOptions = new ImageAnalysisOptions()
+            {
+                Features =
+            ImageAnalysisFeature.CropSuggestions
+            | ImageAnalysisFeature.Caption
+            | ImageAnalysisFeature.People
+            | ImageAnalysisFeature.Text
+            | ImageAnalysisFeature.Tags,
+
+                Language = "en",
+
+                GenderNeutralCaption = true
+            };
+
+        using var analyzer = new ImageAnalyzer(serviceOptions, imageSource, analysisOptions);
+
+        var result = analyzer.Analyze();
+
+        if (result.Reason == ImageAnalysisResultReason.Analyzed)
+        {
+            if (result.Caption != null)
+            {
+                prompt = result.Caption.Content;
+            }
+
+            foreach (var celebrity in result.Objects.Where(x => x.GetType() == typeof(ImageAnalysisCelebrity)))
+            {
+                celebrity = (ImageAnalysisCelebrity)celebrity;
+                Console.WriteLine($"Celebrity detected: {celebrity}, Confidence: {celebrity.Confidence}");
+
+            }
+            if (result.Text != null)
+            {
+                Console.WriteLine($" Text:");
+                foreach (var line in result.Text.Lines)
+                {
+                    string pointsToString = "{" + string.Join(',', line.BoundingPolygon.Select(pointsToString => pointsToString.ToString()))
+                    + "}";
+                    Console.WriteLine($" Line: '{line.Content}', Bounding polygon {pointsToString}");
+
+                    foreach (var word in line.Words)
+                    {
+                        pointsToString = "{" + string.Join(',', word.BoundingPolygon.Select(pointsToString => pointsToString.ToString())) + "}";
+                        Console.WriteLine($" Word: '{word.Content}', Bounding polygon {pointsToString}, Confidence {word.Confidence:0.0000}");
+                    }
+                }
+            }
+        }
+        else
+        {
+            var errorDetails = ImageAnalysisErrorDetails.FromResult(result);
+            Console.WriteLine(" Analysis failed.");
+            Console.WriteLine($" Error reason : {errorDetails.Reason}");
+            Console.WriteLine($" Error code : {errorDetails.ErrorCode}");
+            Console.WriteLine($" Error message: {errorDetails.Message}");
+        }
+    }
+
+    void GenerateImage()
+    {
+    }
+}
