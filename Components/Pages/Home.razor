@@ -61,12 +61,12 @@
                 prompt = result.Caption.Content;
             }
 
-            foreach (var celebrity in result.Objects.Where(x => x.GetType() == typeof(ImageAnalysisCelebrity)))
+            @* foreach (var celebrity in result.Objects.Where(x => x.GetType() == typeof(ImageAnalysisCelebrity)))
             {
                 celebrity = (ImageAnalysisCelebrity)celebrity;
                 Console.WriteLine($"Celebrity detected: {celebrity}, Confidence: {celebrity.Confidence}");
 
-            }
+            } *@
             if (result.Text != null)
             {
                 Console.WriteLine($" Text:");

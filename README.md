@@ -20,9 +20,16 @@ This project is a cloud AI challenge that aims to develop an intelligent system 
 * [![Blazor]][blazorurl]
 * [![Azure][azure]][azureurl]
 
-
+### Utilities 
+- [Just](https://github.com/casey/just)
+- [JQ](https://jqlang.github.io/jq/)
 <!-- GETTING STARTED -->
 ## Getting Started
+
+## Prerequisites
+
+- Azure account
+- VS Code Dev Container extension
 
 ## Installation
 
@@ -31,7 +38,36 @@ This project is a cloud AI challenge that aims to develop an intelligent system 
     ```bash
     git clone https://github.com/dschouw/cloud-ai-challenge
     ```
+2. Get Azure Credentials
+    ```bash
+    az login --use-device-code
+    ```
 
+3. Create Azure resource group
+    ```bash
+    az group create -g cloud-ai-challenge1-rg -l eastus
+    # Confirm group listed with 
+    az group list --query "[?location=='eastus']"
+
+4. Create Cognitive services account
+    ```bash
+    az cognitiveservices account create \    
+    --name cloud-ai-challenge-vision \                                   
+    --resource-group cloud-ai-challenge1-rg \
+    --kind ComputerVision \
+    --sku F0 \
+    --location eastus \
+    --yes
+    ```
+    > This might not work if it is the first time you create a AI services on AI due to requirement for reading/accepting usage terms. If it does not work, sign into Azure console and create first coginitive service manually with accepting T&C's.
+
+5. Set VISION_ENDPOINT and VISION_KEY environment variables with
+    ```bash
+        export VISION_ENDPOINT=$(just az-get-vision-endpoint)
+        export VISION_KEY=$(just az-get-vision-key)
+    ```
+
+    
 # Setup
 ## Azure Setup
 
