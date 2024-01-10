@@ -2,8 +2,8 @@
 set export
 set shell := ["bash", "-uc"]
 
-VISION_ENDPOINT := `az cognitiveservices account show --name "cloud-ai-challenge-vision" --resource-group "cloud-ai-challenge1-rg"  | jq '.. | .endpoint? | values'`
-VISION_KEY      := `az cognitiveservices account keys list --name "cloud-ai-challenge-vision" --resource-group "cloud-ai-challenge1-rg" | jq '.key1'`
+VISION_ENDPOINT := `az cognitiveservices account show --name "cloud-ai-challenge-vision" --resource-group "cloud-ai-challenge1-rg"  | jq '.. | .endpoint? | values' -r`
+VISION_KEY      := `az cognitiveservices account keys list --name "cloud-ai-challenge-vision" --resource-group "cloud-ai-challenge1-rg" | jq '.key1' -r`
 
 ## .NET stuff
 # build

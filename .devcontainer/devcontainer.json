@@ -11,15 +11,16 @@
 	"customizations": {
 		"vscode": {
 			"extensions": [
+				"ms-dotnettools.csharp",
+				"ms-dotnettools.csdevkit",
 				"GitHub.copilot",
 				"GitHub.copilot-chat",
 				"piotrpalarz.vscode-gitignore-generator",
 				"eamodio.gitlens",
-				"ms-dotnettools.vscodeintellicode-csharp",
-				"ms-dotnettools.csdevkit"
+				"ms-dotnettools.vscodeintellicode-csharp"
 			]
 		}
-	}
+	},
 
 	// Features to add to the dev container. More info: https://containers.dev/features.
 	// "features": {},
@@ -34,6 +35,15 @@
 
 	// Use 'postCreateCommand' to run commands after the container is created.
 	// "postCreateCommand": "dotnet restore",
+	// run the following commands to install libssl1.1 
+	// wget -O - https://www.openssl.org/source/openssl-1.1.1u.tar.gz | tar zxf -
+	// cd openssl-1.1.1u
+	// ./config --prefix=/usr/local
+	// make -j $(nproc)
+	// sudo make install_sw install_ssldirs
+	// sudo ldconfig -v
+	// export SSL_CERT_DIR=/etc/ssl/certs
+	"postCreateCommand": "./.devcontainer/postCreateCommand.sh"
 
 	// Configure tool-specific properties.
 	// "customizations": {},

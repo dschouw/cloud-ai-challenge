@@ -1,3 +1,5 @@
+[![LinkedIn][linkedin-shield]][linkedin-url]
+
 # Cloud Challenge 1
 
 <!-- PROJECT SHIELDS -->
@@ -23,6 +25,7 @@ This project is a cloud AI challenge that aims to develop an intelligent system 
 ### Utilities 
 - [Just](https://github.com/casey/just)
 - [JQ](https://jqlang.github.io/jq/)
+
 <!-- GETTING STARTED -->
 ## Getting Started
 
@@ -67,19 +70,18 @@ This project is a cloud AI challenge that aims to develop an intelligent system 
         export VISION_KEY=$(just az-get-vision-key)
     ```
 
-    
-# Setup
-## Azure Setup
 
 ## Usage
 
+### Debug locally
+On a command prompt , use ```dotnet watch run``` to start a debug session
 
 
 ## Links
 * [Cloud with GPS Cloud Challenge 1](https://www.youtube.com/watch?v=GjLTdKr73pc)
 * [Microsoft Challenge Project - Add Image analysis and generation capabilities to your application](https://learn.microsoft.com/en-us/training/modules/challenge-project-add-image-analysis-generation-to-app/)
+* [Azure AI Vision Documentation](https://learn.microsoft.com/en-us/azure/ai-services/computer-vision/)
 
-[![LinkedIn][linkedin-shield]][linkedin-url]
 
 ## License
 
